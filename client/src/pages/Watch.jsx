@@ -20,8 +20,8 @@ function Watch() {
   const { id } = useParams();
   const [videoInfo, setVideoInfo] = useState(null);
   
-  // Get API URL from environment variable with fallback
-  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+  // Get API URL from Vite environment variable with fallback
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://clipbin-backend.onrender.com';
   const videoUrl = `${API_BASE_URL}/watch/${id}`;
 
   // Debug: Log the API URL to console
@@ -54,7 +54,7 @@ function Watch() {
               Watch and download gameplay videos
             </Typography>
             {/* Debug info - remove in production */}
-            {process.env.NODE_ENV === 'development' && (
+            {import.meta.env.MODE === 'development' && (
               <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 1 }}>
                 Video URL: {videoUrl}
               </Typography>

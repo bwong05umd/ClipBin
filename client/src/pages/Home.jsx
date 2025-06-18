@@ -28,14 +28,14 @@ function Home() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Get API URL from environment variable with fallback
-  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+  // Get API URL from Vite environment variable with fallback
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://clipbin-backend.onrender.com';
   
   // Debug: Log the API URL to console
   console.log('API_BASE_URL:', API_BASE_URL);
   console.log('Environment variables:', {
-    REACT_APP_API_URL: process.env.REACT_APP_API_URL,
-    NODE_ENV: process.env.NODE_ENV
+    VITE_API_URL: import.meta.env.VITE_API_URL,
+    MODE: import.meta.env.MODE
   });
 
   const onDrop = useCallback((acceptedFiles) => {
@@ -121,7 +121,7 @@ function Home() {
               Upload your gameplay videos and share them with friends
             </Typography>
             {/* Debug info - remove in production */}
-            {process.env.NODE_ENV === 'development' && (
+            {import.meta.env.MODE === 'development' && (
               <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 1 }}>
                 API URL: {API_BASE_URL}
               </Typography>
