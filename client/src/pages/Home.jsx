@@ -28,8 +28,15 @@ function Home() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Get API URL from environment variable
+  // Get API URL from environment variable with fallback
   const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+  
+  // Debug: Log the API URL to console
+  console.log('API_BASE_URL:', API_BASE_URL);
+  console.log('Environment variables:', {
+    REACT_APP_API_URL: process.env.REACT_APP_API_URL,
+    NODE_ENV: process.env.NODE_ENV
+  });
 
   const onDrop = useCallback((acceptedFiles) => {
     const selectedFile = acceptedFiles[0];
@@ -62,8 +69,11 @@ function Home() {
     const formData = new FormData();
     formData.append('video', file);
 
+    const uploadUrl = `${API_BASE_URL}/upload`;
+    console.log('Attempting to upload to:', uploadUrl);
+
     try {
-      const response = await axios.post(`${API_BASE_URL}/upload`, formData, {
+      const response = await axios.post(uploadUrl, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -86,6 +96,7 @@ function Home() {
       
     } catch (err) {
       console.error('Upload error:', err);
+      console.error('Error response:', err.response);
       setError(err.response?.data?.error || 'Error uploading video');
       toast.error('Failed to upload video');
     } finally {
@@ -109,6 +120,12 @@ function Home() {
             <Typography variant="subtitle1" color="text.secondary">
               Upload your gameplay videos and share them with friends
             </Typography>
+            {/* Debug info - remove in production */}
+            {process.env.NODE_ENV === 'development' && (
+              <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 1 }}>
+                API URL: {API_BASE_URL}
+              </Typography>
+            )}
           </Box>
 
           <Box

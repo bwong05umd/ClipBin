@@ -20,9 +20,13 @@ function Watch() {
   const { id } = useParams();
   const [videoInfo, setVideoInfo] = useState(null);
   
-  // Get API URL from environment variable
+  // Get API URL from environment variable with fallback
   const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
   const videoUrl = `${API_BASE_URL}/watch/${id}`;
+
+  // Debug: Log the API URL to console
+  console.log('Watch page - API_BASE_URL:', API_BASE_URL);
+  console.log('Watch page - videoUrl:', videoUrl);
 
   useEffect(() => {
     // In a real app, you would fetch video metadata from the server
@@ -49,6 +53,12 @@ function Watch() {
             <Typography variant="subtitle1" color="text.secondary">
               Watch and download gameplay videos
             </Typography>
+            {/* Debug info - remove in production */}
+            {process.env.NODE_ENV === 'development' && (
+              <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 1 }}>
+                Video URL: {videoUrl}
+              </Typography>
+            )}
           </Box>
 
           <Box
