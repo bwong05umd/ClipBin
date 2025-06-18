@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import {
@@ -25,6 +26,10 @@ function Home() {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [shareUrl, setShareUrl] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  // Get API URL from environment variable
+  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
 
   const onDrop = useCallback((acceptedFiles) => {
     const selectedFile = acceptedFiles[0];
@@ -58,7 +63,7 @@ function Home() {
     formData.append('video', file);
 
     try {
-      const response = await axios.post('http://localhost:3001/upload', formData, {
+      const response = await axios.post(`${API_BASE_URL}/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -70,9 +75,17 @@ function Home() {
         },
       });
 
-      setShareUrl(response.data.shareUrl);
+      const { shareUrl: responseShareUrl } = response.data;
+      setShareUrl(responseShareUrl);
       toast.success('Video uploaded successfully!');
+      
+      // Redirect to the watch page after successful upload
+      setTimeout(() => {
+        navigate(responseShareUrl.replace(window.location.origin, ''));
+      }, 2000);
+      
     } catch (err) {
+      console.error('Upload error:', err);
       setError(err.response?.data?.error || 'Error uploading video');
       toast.error('Failed to upload video');
     } finally {
@@ -196,6 +209,9 @@ function Home() {
                   </IconButton>
                 </Stack>
               </Box>
+              <Typography variant="body2" sx={{ mt: 1, opacity: 0.8 }}>
+                Redirecting to watch page in 2 seconds...
+              </Typography>
             </Paper>
           )}
         </Stack>

@@ -19,7 +19,10 @@ import axios from 'axios';
 function Watch() {
   const { id } = useParams();
   const [videoInfo, setVideoInfo] = useState(null);
-  const videoUrl = `http://localhost:3001/watch/${id}`;
+  
+  // Get API URL from environment variable
+  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
+  const videoUrl = `${API_BASE_URL}/watch/${id}`;
 
   useEffect(() => {
     // In a real app, you would fetch video metadata from the server
