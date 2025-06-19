@@ -28,9 +28,9 @@ function Home() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Get API URL from Vite environment variable with fallback
-  const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://clipbin-backend.onrender.com';
-  
+  // Get API URL from Vite environment variable
+  const API_BASE_URL = import.meta.env.VITE_API_URL;
+
   // Debug: Log the API URL to console
   console.log('API_BASE_URL:', API_BASE_URL);
   console.log('Environment variables:', {
@@ -58,6 +58,22 @@ function Home() {
     disabled: uploading
   });
 
+  async function uploadVideo(file) {
+    const formData = new FormData();
+    formData.append('video', file);
+
+    const response = await fetch(`${API_BASE_URL}/upload`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Upload failed');
+    }
+    return await response.json();
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!file) return;
@@ -66,38 +82,15 @@ function Home() {
     setError('');
     setUploadProgress(0);
 
-    const formData = new FormData();
-    formData.append('video', file);
-
-    const uploadUrl = `${API_BASE_URL}/upload`;
-    console.log('Attempting to upload to:', uploadUrl);
-
     try {
-      const response = await axios.post(uploadUrl, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        onUploadProgress: (progressEvent) => {
-          const progress = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-          setUploadProgress(progress);
-        },
-      });
-
-      const { shareUrl: responseShareUrl } = response.data;
-      setShareUrl(responseShareUrl);
+      const data = await uploadVideo(file);
+      setShareUrl(data.shareUrl);
       toast.success('Video uploaded successfully!');
-      
-      // Redirect to the watch page after successful upload
       setTimeout(() => {
-        navigate(responseShareUrl.replace(window.location.origin, ''));
+        navigate(data.shareUrl.replace(window.location.origin, ''));
       }, 2000);
-      
     } catch (err) {
-      console.error('Upload error:', err);
-      console.error('Error response:', err.response);
-      setError(err.response?.data?.error || 'Error uploading video');
+      setError(err.message);
       toast.error('Failed to upload video');
     } finally {
       setUploading(false);
