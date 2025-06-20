@@ -59,6 +59,10 @@ function Home() {
   });
 
   async function uploadVideo(file) {
+    if (!API_BASE_URL) {
+      throw new Error('API URL not configured');
+    }
+
     const formData = new FormData();
     formData.append('video', file);
 

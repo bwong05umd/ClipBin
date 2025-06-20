@@ -11,7 +11,10 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: ['https://clip-bin.vercel.app', 'http://localhost:3000'],
+  credentials: true
+}));
 app.use(express.json());
 
 // Ensure temp directory exists
@@ -114,6 +117,17 @@ app.use((err, req, res, next) => {
 
 // Start server
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🚀 Server running on port ${port}`);
+  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🔗 Health check: http://localhost:${port}/`);
+  
+  // Validate environment variables
+  const requiredEnvVars = ['CLOUDINARY_CLOUD_NAME', 'CLOUDINARY_API_KEY', 'CLOUDINARY_API_SECRET'];
+  const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+  
+  if (missingVars.length > 0) {
+    console.warn(`⚠️  Missing environment variables: ${missingVars.join(', ')}`);
+  } else {
+    console.log('✅ All required environment variables are set');
+  }
 });

@@ -19,9 +19,10 @@ import axios from 'axios';
 function Watch() {
   const { id } = useParams();
   const [videoInfo, setVideoInfo] = useState(null);
+  const [error, setError] = useState(null);
   
-  // Get API URL from Vite environment variable with fallback
-  const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://clipbin-backend.onrender.com';
+  // Get API URL from Vite environment variable
+  const API_BASE_URL = import.meta.env.VITE_API_URL;
   const videoUrl = `${API_BASE_URL}/watch/${id}`;
 
   // Debug: Log the API URL to console
@@ -29,18 +30,35 @@ function Watch() {
   console.log('Watch page - videoUrl:', videoUrl);
 
   useEffect(() => {
+    if (!API_BASE_URL) {
+      setError('API URL not configured');
+      return;
+    }
+
     // In a real app, you would fetch video metadata from the server
     // For now, we'll just use the URL
     setVideoInfo({
       url: videoUrl,
       filename: `clip-${id}.mp4`,
     });
-  }, [id, videoUrl]);
+  }, [id, videoUrl, API_BASE_URL]);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(window.location.href);
     toast.success('Link copied to clipboard!');
   };
+
+  if (error) {
+    return (
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
+          <Typography color="error" align="center">
+            {error}
+          </Typography>
+        </Paper>
+      </Container>
+    );
+  }
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
