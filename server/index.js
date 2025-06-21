@@ -74,7 +74,7 @@ app.post('/upload', upload.single('video'), async (req, res) => {
       createdAt
     };
 
-    const shareUrl = `${process.env.FRONTEND_URL || 'https://clip-i1jwwge60-bwong05umds-projects.vercel.app'}/watch/${videoId}`;
+    const shareUrl = `${process.env.FRONTEND_URL || 'https://clip-bin.vercel.app'}/watch/${videoId}`;
     res.json({ success: true, videoId, shareUrl });
   } catch (error) {
     console.error('Upload error:', error);
