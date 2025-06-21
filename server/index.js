@@ -11,8 +11,13 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 // Middleware
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://clip-i1jwwge60-bwong05umds-projects.vercel.app'
+];
+
 app.use(cors({
-  origin: ['https://clip-me1kfwrh2-bwong05umds-projects.vercel.app', 'https://clip-bin.vercel.app', 'http://localhost:3000'],
+  origin: allowedOrigins,
   methods: ['GET', 'POST'],
   credentials: true
 }));
