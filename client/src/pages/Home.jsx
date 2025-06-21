@@ -1,6 +1,5 @@
 import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import {
@@ -26,7 +25,6 @@ function Home() {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [shareUrl, setShareUrl] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
 
   // Get API URL from Vite environment variable
   const API_BASE_URL = import.meta.env.VITE_API_URL;
@@ -90,9 +88,6 @@ function Home() {
       const data = await uploadVideo(file);
       setShareUrl(data.shareUrl);
       toast.success('Video uploaded successfully!');
-      setTimeout(() => {
-        navigate(data.shareUrl.replace(window.location.origin, ''));
-      }, 2000);
     } catch (err) {
       setError(err.message);
       toast.error('Failed to upload video');
@@ -224,7 +219,7 @@ function Home() {
                 </Stack>
               </Box>
               <Typography variant="body2" sx={{ mt: 1, opacity: 0.8 }}>
-                Redirecting to watch page in 2 seconds...
+                You can copy and share this link. It will work for 24 hours.
               </Typography>
             </Paper>
           )}
