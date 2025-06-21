@@ -74,7 +74,7 @@ app.post('/upload', upload.single('video'), async (req, res) => {
       createdAt
     };
 
-    const shareUrl = `${process.env.FRONTEND_URL || 'https://clip-bin.vercel.app'}/watch/${videoId}`;
+    const shareUrl = `${process.env.FRONTEND_URL || 'https://clip-i1jwwge60-bwong05umds-projects.vercel.app'}/watch/${videoId}`;
     res.json({ success: true, videoId, shareUrl });
   } catch (error) {
     console.error('Upload error:', error);
@@ -132,8 +132,8 @@ app.listen(port, () => {
   const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
   
   if (missingVars.length > 0) {
-    console.warn(`⚠️  Missing environment variables: ${missingVars.join(', ')}`);
+    console.warn(`Missing environment variables: ${missingVars.join(', ')}`);
   } else {
-    console.log('✅ All required environment variables are set');
+    console.log('All required environment variables are set');
   }
 });
