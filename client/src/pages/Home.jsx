@@ -18,6 +18,7 @@ import {
   ContentCopy as CopyIcon,
   CheckCircle as SuccessIcon,
 } from '@mui/icons-material';
+import { config } from '../config';
 
 function Home() {
   const [file, setFile] = useState(null);
@@ -26,11 +27,8 @@ function Home() {
   const [shareUrl, setShareUrl] = useState('');
   const [error, setError] = useState('');
 
-  // Get API URL from Vite environment variable
-  const API_BASE_URL = import.meta.env.VITE_API_URL;
-
   // Debug: Log the API URL to console
-  console.log('API_BASE_URL:', API_BASE_URL);
+  console.log('API_BASE_URL:', config.API_BASE_URL);
   console.log('Environment variables:', {
     VITE_API_URL: import.meta.env.VITE_API_URL,
     MODE: import.meta.env.MODE
@@ -57,14 +55,14 @@ function Home() {
   });
 
   async function uploadVideo(file) {
-    if (!API_BASE_URL) {
+    if (!config.API_BASE_URL) {
       throw new Error('API URL not configured');
     }
 
     const formData = new FormData();
     formData.append('video', file);
 
-    const response = await fetch(`${API_BASE_URL}/upload`, {
+    const response = await fetch(`${config.API_BASE_URL}/upload`, {
       method: 'POST',
       body: formData,
     });
@@ -113,9 +111,9 @@ function Home() {
               Upload your gameplay videos and share them with friends
             </Typography>
             {/* Debug info - remove in production */}
-            {import.meta.env.MODE === 'development' && (
+            {config.DEBUG && (
               <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 1 }}>
-                API URL: {API_BASE_URL}
+                API URL: {config.API_BASE_URL}
               </Typography>
             )}
           </Box>

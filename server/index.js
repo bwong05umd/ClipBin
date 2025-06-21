@@ -14,7 +14,8 @@ const port = process.env.PORT || 3001;
 const allowedOrigins = [
     'http://localhost:5173',
     'https://clip-bin.vercel.app',
-    'https://clip-i1jwwge60-bwong05umds-projects.vercel.app'
+    'https://clip-i1jwwge60-bwong05umds-projects.vercel.app',
+    'https://clipbin-bwong05umd.vercel.app'
   ];
   
 app.use(cors({
@@ -114,6 +115,11 @@ app.get('/watch/:id', (req, res) => {
 
   // Redirect to Cloudinary-hosted video
   res.redirect(video.url);
+});
+
+// 404 handler for unknown routes - return JSON, not HTML
+app.use('*', (req, res) => {
+  res.status(404).json({ error: 'Route not found' });
 });
 
 // Error handling middleware

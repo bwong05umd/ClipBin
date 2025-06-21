@@ -15,22 +15,21 @@ import {
   ContentCopy as CopyIcon,
 } from '@mui/icons-material';
 import axios from 'axios';
+import { config } from '../config';
 
 function Watch() {
   const { id } = useParams();
   const [videoInfo, setVideoInfo] = useState(null);
   const [error, setError] = useState(null);
   
-  // Get API URL from Vite environment variable
-  const API_BASE_URL = import.meta.env.VITE_API_URL;
-  const videoUrl = `${API_BASE_URL}/watch/${id}`;
+  const videoUrl = `${config.API_BASE_URL}/watch/${id}`;
 
   // Debug: Log the API URL to console
-  console.log('Watch page - API_BASE_URL:', API_BASE_URL);
+  console.log('Watch page - API_BASE_URL:', config.API_BASE_URL);
   console.log('Watch page - videoUrl:', videoUrl);
 
   useEffect(() => {
-    if (!API_BASE_URL) {
+    if (!config.API_BASE_URL) {
       setError('API URL not configured');
       return;
     }
@@ -41,7 +40,7 @@ function Watch() {
       url: videoUrl,
       filename: `clip-${id}.mp4`,
     });
-  }, [id, videoUrl, API_BASE_URL]);
+  }, [id, videoUrl]);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -72,7 +71,7 @@ function Watch() {
               Watch and download gameplay videos
             </Typography>
             {/* Debug info - remove in production */}
-            {import.meta.env.MODE === 'development' && (
+            {config.DEBUG && (
               <Typography variant="caption" color="text.secondary" display="block" sx={{ mt: 1 }}>
                 Video URL: {videoUrl}
               </Typography>

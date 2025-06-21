@@ -11,6 +11,11 @@ export default defineConfig({
       output: {
         manualChunks: undefined
       }
-    }
+    },
+    assetsDir: 'assets',
+    sourcemap: false
+  },
+  define: {
+    'process.env': {}
   }
 }); 
