@@ -3,15 +3,15 @@
 - Upload your .mp4, get a link, and share the moment!
 
 🚀 Project Overview:
-ClipBin is a full-stack web application that lets users upload short gameplay videos and instantly receive a shareable link. Friends can view or download the clip—no login required.
+- ClipBin is a full-stack web application that lets users upload short gameplay videos and instantly receive a shareable link. Friends can view or download the clip—no login required.
 Perfect for gamers, streamers, and anyone who wants to share highlights quickly and securely.
 
 🛠️ Tech Stack:
-Frontend: React + Vite &nbsp; !React !Vite
-Styling: Material UI (MUI) &nbsp; !MUI
-Backend: Node.js + Express.js &nbsp; !Node.js !Express
-Storage: Cloudinary for secure video hosting !Cloudinary
-Hosting: Vercel (frontend) & Render (backend)
+- Frontend: React + Vite 
+- Styling: Material UI (MUI) 
+- Backend: Node.js + Express.js
+- Storage: Cloudinary for secure video hosting 
+- Hosting: Vercel (frontend) & Render (backend)
 
 ✨ Features:
 - 🎥 Upload MP4: Drag-and-drop or select a video file (max 100MB)
