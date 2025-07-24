@@ -18,12 +18,22 @@ const allowedOrigins = [
     'https://clipbin-bwong05umd.vercel.app'
   ];
   
-app.use(cors({
-  origin: allowedOrigins,
-  methods: ['GET', 'POST'],
-  credentials: true
-}));
-app.use(express.json());
+  app.use(cors({
+    origin: (origin, callback) => {
+      // Allow localhost and *.vercel.app
+      if (
+        !origin || // allow curl, Postman, etc.
+        origin.includes('localhost') ||
+        origin.endsWith('.vercel.app')
+      ) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: ['GET', 'POST'],
+    credentials: true
+  }));  
 
 // Ensure temp directory exists
 const tempDir = path.join(__dirname, 'temp');

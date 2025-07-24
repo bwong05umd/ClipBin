@@ -19,6 +19,7 @@ import {
   CheckCircle as SuccessIcon,
 } from '@mui/icons-material';
 import { config } from '../config';
+import { Circles } from 'react-loader-spinner';
 
 function Home() {
   const [file, setFile] = useState(null);
@@ -155,10 +156,16 @@ function Home() {
           )}
 
           {uploading && (
-            <Box sx={{ width: '100%' }}>
-              <LinearProgress variant="determinate" value={uploadProgress} />
-              <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 1 }}>
-                Uploading... {uploadProgress}%
+            <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 120 }}>
+              <Circles
+                height={64}
+                width={64}
+                color="#1976d2"
+                ariaLabel="uploading-spinner"
+                visible={true}
+              />
+              <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 2 }}>
+                Uploading...
               </Typography>
             </Box>
           )}
