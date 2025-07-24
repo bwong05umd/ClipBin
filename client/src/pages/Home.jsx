@@ -142,6 +142,9 @@ function Home() {
             <Typography variant="body2" color="text.secondary">
               Only MP4 files are supported
             </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Maximum file size is 100MB.
+            </Typography>
           </Box>
 
           {file && (
